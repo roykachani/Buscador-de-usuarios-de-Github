@@ -1,0 +1,55 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscador de Usuario de GitHub</title>
+</head>
+<body>
+    <main>
+        <div>
+            <input  type="text" onkeypress="uservalue(event)" id="username" placeholder="usuario..."></inputs>
+            <button type="submit" onclick="fetchData()" id="submit">Buscar</button>
+        </div>    
+        <div>
+            <img style="width: 100px; height: 100px;" id="img" src="" alt="">
+            <a id="ref" href=""></a>
+        </div>    
+        <div>
+            <label for="name">Nombre</label>    <span id="name"></span><br>
+            <label for="company">Empresa</label>    <span id="company"></span><br>
+            <label for="bio">Bio</label>     <span id="bio"></span><br>
+            <!-- <label for="blog">Blog</label>     <a href="" id="blog"></a> -->
+        </div>    
+    </main>
+    <script>
+        function uservalue(e){
+            if (e.key == "Enter"){
+                console.log(e.target.value);
+                const inputValue = document.getElementById("username").value;
+                fetchData(inputValue)
+            }
+        }
+        async function fetchData() {
+            const inputValue = document.getElementById("username").value;
+            const data = await fetch(`https://api.github.com/users/${inputValue}`);
+            const json = await data.json();
+            
+                
+            document.getElementById("name").innerText = json.name;
+            document.getElementById("company").innerText = json.company;
+            document.getElementById("bio").innerText = json.bio;
+            document.getElementById("ref").setAttribute("href",json.html_url);
+            document.getElementById("ref").innerText = `#${json.id}`;
+            document.getElementById("img").setAttribute("src", json.avatar_url);
+            document.getElementById("img").setAttribute("alt","profile image") 
+
+              
+                
+                 
+         }
+        
+    </script>
+</body>
+</html>
